@@ -26,9 +26,6 @@ from PyQt5.QtCore import (
 from PyQt5.QtWidgets import (
     QAction,
     QApplication,
-    QFileDialog,
-    QLabel,
-    QLineEdit,
     QMainWindow,
     QStatusBar,
     QTabWidget,
@@ -36,7 +33,6 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import (
     QIcon,
-    QPixmap,
 )
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtPrintSupport import QPrintPreviewDialog
@@ -49,7 +45,15 @@ home = os.path.abspath(os.path.dirname(__file__))
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, url=None, appname=None, *args, **kwargs):
+        if url:
+            self.url = url
+        else:
+            self.url = "https://github.com/cacao-accounting/cacao-accounting"
+        if app:
+            self.appname = appname
+        else:
+            self.appname = "Open Marquesote"
         super(MainWindow, self).__init__(*args, **kwargs)
 
         self.tabs = QTabWidget()
@@ -87,68 +91,38 @@ class MainWindow(QMainWindow):
         home_btn.setStatusTip("Go home")
         home_btn.triggered.connect(self.navigate_home)
         navtb.addAction(home_btn)
-
-        navtb.addSeparator()
-
-        self.httpsicon = QLabel()  # Yes, really!
-        self.httpsicon.setPixmap(QPixmap(os.path.join(home, "images", "lock-nossl.png")))
-        navtb.addWidget(self.httpsicon)
-
-        self.urlbar = QLineEdit()
-        self.urlbar.returnPressed.connect(self.navigate_to_url)
-        navtb.addWidget(self.urlbar)
-
-        stop_btn = QAction(QIcon(os.path.join(home, "images", "cross-circle.png")), "Stop", self)
-        stop_btn.setStatusTip("Stop loading current page")
-        stop_btn.triggered.connect(lambda: self.tabs.currentWidget().stop())
-        navtb.addAction(stop_btn)
+        print_action = QAction(QIcon(os.path.join(home, "images", "printer.png")), "Print...", self)
+        print_action.setStatusTip("Print current page")
+        print_action.triggered.connect(self.print_page)
+        navtb.addAction(print_action)
+        new_tab_action = QAction(QIcon(os.path.join(home, "images", "ui-tab--plus.png")), "New Tab", self)
+        new_tab_action.setStatusTip("Open a new tab")
+        new_tab_action.triggered.connect(lambda _: self.add_new_tab())
+        navtb.addAction(new_tab_action)
 
         # Uncomment to disable native menubar on Mac
         # self.menuBar().setNativeMenuBar(False)
 
-        file_menu = self.menuBar().addMenu("&File")
-
-        new_tab_action = QAction(QIcon(os.path.join(home, "images", "ui-tab--plus.png")), "New Tab", self)
-        new_tab_action.setStatusTip("Open a new tab")
-        new_tab_action.triggered.connect(lambda _: self.add_new_tab())
-        file_menu.addAction(new_tab_action)
-
-        open_file_action = QAction(QIcon(os.path.join(home, "images", "disk--arrow.png")), "Open file...", self)
-        open_file_action.setStatusTip("Open from file")
-        open_file_action.triggered.connect(self.open_file)
-        file_menu.addAction(open_file_action)
-
-        save_file_action = QAction(QIcon(os.path.join(home, "images", "disk--pencil.png")), "Save Page As...", self)
-        save_file_action.setStatusTip("Save current page to file")
-        save_file_action.triggered.connect(self.save_file)
-        file_menu.addAction(save_file_action)
-
-        print_action = QAction(QIcon(os.path.join(home, "images", "printer.png")), "Print...", self)
-        print_action.setStatusTip("Print current page")
-        print_action.triggered.connect(self.print_page)
-        file_menu.addAction(print_action)
-
-        self.add_new_tab(QUrl("http://127.0.0.1:8080/"), "Homepage")
+        self.add_new_tab(QUrl(self.url), self.appname)
 
         self.show()
 
-        self.setWindowTitle("Mozarella Ashbadger")
+        if self.appname is None:
+            self.setWindowTitle(self.appname)
+        else:
+            self.setWindowTitle(self.appname)
         self.setWindowIcon(QIcon(os.path.join(home, "images", "ma-icon-64.png")))
 
     def add_new_tab(self, qurl=None, label="Blank"):
 
         if qurl is None:
-            qurl = QUrl("")
+            qurl = QUrl(self.url)
 
         browser = QWebEngineView()
         browser.setUrl(qurl)
         i = self.tabs.addTab(browser, label)
 
         self.tabs.setCurrentIndex(i)
-
-        # More difficult! We only want to update the url when it's from the
-        # correct tab
-        browser.urlChanged.connect(lambda qurl, browser=browser: self.update_urlbar(qurl, browser))
 
         browser.loadFinished.connect(lambda _, i=i, browser=browser: self.tabs.setTabText(i, browser.page().title()))
 
@@ -173,32 +147,7 @@ class MainWindow(QMainWindow):
             return
 
         title = self.tabs.currentWidget().page().title()
-        self.setWindowTitle("%s - Mozarella Ashbadger" % title)
-
-    def navigate_mozarella(self):
-        self.tabs.currentWidget().setUrl(QUrl("https://www.udemy.com/522076"))
-
-    def open_file(self):
-        filename, _ = QFileDialog.getOpenFileName(
-            self, "Open file", "", "Hypertext Markup Language (*.htm *.html);;" "All files (*.*)"
-        )
-
-        if filename:
-            with open(filename, "r") as f:
-                html = f.read()
-
-            self.tabs.currentWidget().setHtml(html)
-            self.urlbar.setText(filename)
-
-    def save_file(self):
-        filename, _ = QFileDialog.getSaveFileName(
-            self, "Save Page As", "", "Hypertext Markup Language (*.htm *html);;" "All files (*.*)"
-        )
-
-        if filename:
-            html = self.tabs.currentWidget().page().toHtml()
-            with open(filename, "w") as f:
-                f.write(html.encode("utf8"))
+        self.setWindowTitle(title)
 
     def print_page(self):
         dlg = QPrintPreviewDialog()
@@ -206,10 +155,10 @@ class MainWindow(QMainWindow):
         dlg.exec_()
 
     def navigate_home(self):
-        self.tabs.currentWidget().setUrl(QUrl("http://www.google.com"))
+        self.tabs.currentWidget().setUrl(QUrl(self.url))
 
     def navigate_to_url(self):  # Does not receive the Url
-        q = QUrl(self.urlbar.text())
+        q = QUrl(self.url)
         if q.scheme() == "":
             q.setScheme("http")
 
@@ -220,17 +169,6 @@ class MainWindow(QMainWindow):
         if browser != self.tabs.currentWidget():
             # If this signal is not from the current tab, ignore
             return
-
-        if q.scheme() == "https":
-            # Secure padlock icon
-            self.httpsicon.setPixmap(QPixmap(os.path.join(home, "images", "lock-ssl.png")))
-
-        else:
-            # Insecure padlock icon
-            self.httpsicon.setPixmap(QPixmap(os.path.join(home, "images", "lock-nossl.png")))
-
-        self.urlbar.setText(q.toString())
-        self.urlbar.setCursorPosition(0)
 
 
 if __name__ == "__main__":
