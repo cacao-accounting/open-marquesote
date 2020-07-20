@@ -19,11 +19,30 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
 # THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
-from PyQt5.QtWebEngineWidgets import *
-from PyQt5.QtPrintSupport import *
+from PyQt5.QtCore import (
+    QSize,
+    QUrl,
+)
+from PyQt5.QtWidgets import (
+    QAction,
+    QApplication,
+    QDialog,
+    QDialogButtonBox,
+    QFileDialog,
+    QLabel,
+    QLineEdit,
+    QMainWindow,
+    QStatusBar,
+    QTabWidget,
+    QToolBar,
+    QVBoxLayout,
+)
+from PyQt5.QtGui import (
+    QIcon,
+    QPixmap,
+)
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5.QtPrintSupport import QPrintPreviewDialog
 
 import os
 import sys
