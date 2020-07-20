@@ -22,13 +22,10 @@
 from PyQt5.QtCore import (
     QSize,
     QUrl,
-    Qt,
 )
 from PyQt5.QtWidgets import (
     QAction,
     QApplication,
-    QDialog,
-    QDialogButtonBox,
     QFileDialog,
     QLabel,
     QLineEdit,
@@ -36,7 +33,6 @@ from PyQt5.QtWidgets import (
     QStatusBar,
     QTabWidget,
     QToolBar,
-    QVBoxLayout,
 )
 from PyQt5.QtGui import (
     QIcon,
@@ -50,39 +46,6 @@ import sys
 
 
 home = os.path.abspath(os.path.dirname(__file__))
-
-
-class AboutDialog(QDialog):
-    def __init__(self, *args, **kwargs):
-        super(AboutDialog, self).__init__(*args, **kwargs)
-
-        QBtn = QDialogButtonBox.Ok  # No cancel
-        self.buttonBox = QDialogButtonBox(QBtn)
-        self.buttonBox.accepted.connect(self.accept)
-        self.buttonBox.rejected.connect(self.reject)
-
-        layout = QVBoxLayout()
-
-        title = QLabel("Mozarella Ashbadger")
-        font = title.font()
-        font.setPointSize(20)
-        title.setFont(font)
-
-        layout.addWidget(title)
-
-        logo = QLabel()
-        logo.setPixmap(QPixmap(os.path.join(home, "images", "ma-icon-128.png")))
-        layout.addWidget(logo)
-
-        layout.addWidget(QLabel("Version 23.35.211.233232"))
-        layout.addWidget(QLabel("Copyright 2015 Mozarella Inc."))
-
-        for i in range(0, layout.count()):
-            layout.itemAt(i).setAlignment(Qt.AlignHCenter)
-
-        layout.addWidget(self.buttonBox)
-
-        self.setLayout(layout)
 
 
 class MainWindow(QMainWindow):
@@ -165,20 +128,6 @@ class MainWindow(QMainWindow):
         print_action.triggered.connect(self.print_page)
         file_menu.addAction(print_action)
 
-        help_menu = self.menuBar().addMenu("&Help")
-
-        about_action = QAction(QIcon(os.path.join(home, "images", "question.png")), "About Mozarella Ashbadger", self)
-        about_action.setStatusTip("Find out more about Mozarella Ashbadger")  # Hungry!
-        about_action.triggered.connect(self.about)
-        help_menu.addAction(about_action)
-
-        navigate_mozarella_action = QAction(
-            QIcon(os.path.join(home, "images", "lifebuoy.png")), "Mozarella Ashbadger Homepage", self
-        )
-        navigate_mozarella_action.setStatusTip("Go to Mozarella Ashbadger Homepage")
-        navigate_mozarella_action.triggered.connect(self.navigate_mozarella)
-        help_menu.addAction(navigate_mozarella_action)
-
         self.add_new_tab(QUrl("http://127.0.0.1:8080/"), "Homepage")
 
         self.show()
@@ -228,10 +177,6 @@ class MainWindow(QMainWindow):
 
     def navigate_mozarella(self):
         self.tabs.currentWidget().setUrl(QUrl("https://www.udemy.com/522076"))
-
-    def about(self):
-        dlg = AboutDialog()
-        dlg.exec_()
 
     def open_file(self):
         filename, _ = QFileDialog.getOpenFileName(
