@@ -22,6 +22,7 @@
 from PyQt5.QtCore import (
     QSize,
     QUrl,
+    Qt,
 )
 from PyQt5.QtWidgets import (
     QAction,
