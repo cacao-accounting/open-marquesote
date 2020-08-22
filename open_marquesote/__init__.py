@@ -72,17 +72,17 @@ class MainWindow(QMainWindow):
         navtb.setIconSize(QSize(16, 16))
         self.addToolBar(navtb)
 
-        back_btn = QAction(QIcon(os.path.join(home, "images", "arrow-180.png")), "Back", self)
+        back_btn = QAction(QIcon(os.path.join(home, "images", "back.png")), "Back", self)
         back_btn.setStatusTip("Back to previous page")
         back_btn.triggered.connect(lambda: self.tabs.currentWidget().back())
         navtb.addAction(back_btn)
 
-        next_btn = QAction(QIcon(os.path.join(home, "images", "arrow-000.png")), "Forward", self)
+        next_btn = QAction(QIcon(os.path.join(home, "images", "next.png")), "Forward", self)
         next_btn.setStatusTip("Forward to next page")
         next_btn.triggered.connect(lambda: self.tabs.currentWidget().forward())
         navtb.addAction(next_btn)
 
-        reload_btn = QAction(QIcon(os.path.join(home, "images", "arrow-circle-315.png")), "Reload", self)
+        reload_btn = QAction(QIcon(os.path.join(home, "images", "reload.png")), "Reload", self)
         reload_btn.setStatusTip("Reload page")
         reload_btn.triggered.connect(lambda: self.tabs.currentWidget().reload())
         navtb.addAction(reload_btn)
