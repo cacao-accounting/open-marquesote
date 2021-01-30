@@ -91,9 +91,9 @@ class MainWindow(QMainWindow):
         home_btn.setStatusTip("Go home")
         home_btn.triggered.connect(self.navigate_home)
         navtb.addAction(home_btn)
-        print_action = QAction(QIcon(os.path.join(home, "images", "printer.png")), "Print...", self)
-        print_action.setStatusTip("Print current page")
-        print_action.triggered.connect(self.print_page)
+        # print_action = QAction(QIcon(os.path.join(home, "images", "printer.png")), "Print...", self)
+        # print_action.setStatusTip("Print current page")
+        # print_action.triggered.connect(self.print_page)
         navtb.addAction(print_action)
         new_tab_action = QAction(QIcon(os.path.join(home, "images", "ui-tab--plus.png")), "New Tab", self)
         new_tab_action.setStatusTip("Open a new tab")
@@ -151,7 +151,7 @@ class MainWindow(QMainWindow):
 
     def print_page(self):
         dlg = QPrintPreviewDialog()
-        dlg.paintRequested.connect(self.browser.print_)
+        #dlg.paintRequested.connect()
         dlg.exec_()
 
     def navigate_home(self):
