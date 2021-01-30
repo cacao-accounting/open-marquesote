@@ -1,5 +1,7 @@
 # open-marquesote
-Minimal PyQtWebEngine web browser useful to serve python web apps in desktop
+Minimal PyQtWebEngine web browser useful to serve python web apps in desktop.
+
+![Preview](https://raw.githubusercontent.com/cacao-accounting/open-marquesote/main/preview.JPG)
 
 Live sample can be found at [Cacao Accounting Desktop](https://github.com/cacao-accounting/cacao-accounting-desktop/blob/master/cacao_desktop.py),
 just replace the app to be served with your own project, please note that we recomend the [Waitress](https://docs.pylonsproject.org/projects/waitress/en/stable/arguments.html#arguments) WSGI server
