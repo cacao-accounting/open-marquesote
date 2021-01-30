@@ -49,7 +49,7 @@ class MainWindow(QMainWindow):
         if url:
             self.url = url
         else:
-            self.url = "https://github.com/cacao-accounting/cacao-accounting"
+            self.url = "https://github.com/cacao-accounting/open-marquesote"
         if appname:
             self.appname = appname
         else:
