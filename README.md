@@ -59,7 +59,7 @@ if __name__ == "__main__":
 ```bash
 pip install -r requirements.txt
 pip install flask
-python example
+python example.py
 ```
 ![Preview](https://raw.githubusercontent.com/cacao-accounting/open-marquesote/main/example.JPG)
 
