@@ -26,7 +26,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name="open-marquesote",
-    version="0.0.1",
+    version="1.0.1",
     author="William José Moreno Reyes",
     author_email="williamjmorenor@gmail.com",
     description="Minimal Web Browser",
@@ -35,7 +35,7 @@ setup(
     packages=["open_marquesote"],
     include_package_data=True,
     classifiers=[
-        "Development Status :: 1 - Planning"
+        "Development Status :: 5 - Production/Stable"
     ],
     install_requires=[
         "PyQtWebEngine",
