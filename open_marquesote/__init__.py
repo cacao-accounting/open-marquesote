@@ -94,7 +94,7 @@ class MainWindow(QMainWindow):
         # print_action = QAction(QIcon(os.path.join(home, "images", "printer.png")), "Print...", self)
         # print_action.setStatusTip("Print current page")
         # print_action.triggered.connect(self.print_page)
-        navtb.addAction(print_action)
+        # navtb.addAction(print_action)
         new_tab_action = QAction(QIcon(os.path.join(home, "images", "ui-tab--plus.png")), "New Tab", self)
         new_tab_action.setStatusTip("Open a new tab")
         new_tab_action.triggered.connect(lambda _: self.add_new_tab())
